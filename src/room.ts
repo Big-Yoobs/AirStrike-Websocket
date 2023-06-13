@@ -1,7 +1,7 @@
 import User from "./user.js";
 import { randomString } from "./utils.js";
 
-export default class Room {
+export class Room {
     private static rooms: Map<string, Room> = new Map();
 
     static {
