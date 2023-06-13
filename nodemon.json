@@ -1,0 +1,8 @@
+{
+    "ignore": [
+        "node_modules"
+    ],
+    "watch": ["src", "package.json"],
+    "exec": "npm run quickstart",
+    "ext": "ts"
+}
