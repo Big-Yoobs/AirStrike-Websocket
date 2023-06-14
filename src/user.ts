@@ -150,6 +150,16 @@ export default class User {
             return;
         }
 
+        if (type == "buffering") {
+            if (typeof data != "boolean") throw "invalid data";
+
+            for (let l of this.messageListeners) {
+                if (l.id == "buffering") {
+                    l.callback(data);
+                }
+            }
+        }
+
         console.error(`Unknown packet type '${type}'`);
     }
 }

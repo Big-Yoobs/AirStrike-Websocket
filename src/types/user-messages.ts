@@ -29,5 +29,10 @@ export interface UserMessageChat extends UserMessage {
     callback: (chatMessage: string) => void
 }
 
+export interface UserMessageBuffering extends UserMessage {
+    id: "buffering"
+    callback: (isBuffering: boolean) => void
+}
 
-export type UserMessageType = UserMessageCreateRoom | UserMessageJoinRoom | UserMessageUrl | UserMessageLeave | UserMessageChat;
+
+export type UserMessageType = UserMessageCreateRoom | UserMessageJoinRoom | UserMessageUrl | UserMessageLeave | UserMessageChat | UserMessageBuffering;

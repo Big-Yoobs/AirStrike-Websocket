@@ -1,3 +1,4 @@
+import RoomMember from "./room-member.js";
 import User from "./user.js";
 import { randomString } from "./utils.js";
 
@@ -48,7 +49,7 @@ export class Room {
                     if (!room) {
                         return user.error("You're not in a room");
                     }
-                    if (room.owner != user) {
+                    if (room.owner.user != user) {
                         return user.error("You're not the owner of the room");
                     }
                     room.setUrl(url);
@@ -65,12 +66,27 @@ export class Room {
                     room.sendChat(message, user);
                 }
             });
+
+            user.addMessageListener({
+                id: "buffering",
+                callback: isBuffering => {
+                    const room = this.getUserRoom(user);
+                    if (!room) {
+                        return user.error("You're not in a room");
+                    }
+                    const member = room.getMember(user);
+                    if (!member) {
+                        return user.error("You're not in a room");
+                    }
+                    member.isBuffering = isBuffering;
+                }
+            })
         });
     }
 
     static getUserRoom(user: User) {
         for (let room of this.rooms.values()) {
-            if (room.members.includes(user)) {
+            if (room.members.map(member => member.user).includes(user)) {
                 return room;
             }
         }
@@ -79,10 +95,11 @@ export class Room {
 
 
     public readonly id: string;
-    private members: User[] = [];
+    private members: RoomMember[] = [];
     private url: string | null = null;
+    private owner: RoomMember;
 
-    private constructor(private owner: User) {
+    private constructor(owner: User) {
         let roomId;
         let tries = 0;
         do {
@@ -90,13 +107,14 @@ export class Room {
         } while (Room.rooms.has(roomId));
         this.id = roomId;
         Room.rooms.set(this.id, this);
-        this.members.push(owner);
+        this.owner = new RoomMember(owner);
+        this.members.push(this.owner);
         console.log("created room with ID", this.id);
     }
 
     private dispatchEvent(type: string, data?: any) {
-        for (let user of this.members) {
-            user.send(type, data);
+        for (let member of this.members) {
+            member.user.send(type, data);
         }
     }
 
@@ -104,16 +122,15 @@ export class Room {
         if (Room.getUserRoom(user)) {
             throw "You're already in a room";
         }
-        this.members.push(user);
+        this.members.push(new RoomMember(user));
     }
 
     public removeUser(user: User) {
-        const index = this.members.indexOf(user);
-        if (index < 0) {
-            throw "You're not in a room";
-        }
-        this.members.splice(index, 1);
-        if (this.owner == user) {
+        const member = this.getMember(user);
+        if (!member) throw "You're not in a room";
+        this.members.splice(this.members.indexOf(member, 1));
+
+        if (this.owner.user == user) {
             if (this.members.length) {
                 this.owner = this.members[0];
             } else {
@@ -131,5 +148,21 @@ export class Room {
 
     public sendChat(message: string, sender?: User) {
         this.dispatchEvent("chat", message); // todo: add system messages
+    }
+
+    public getMember(user: User) {
+        const member = this.members.filter(member => member.user == user).shift();
+        return member || null;
+    }
+
+    public sendBufferEvent() {
+        let shouldBuffer = false;
+        for (let member of this.members) {
+            if (member.isBuffering) {
+                shouldBuffer = true;
+                break;
+            }
+        }
+        this.dispatchEvent("buffering", shouldBuffer);
     }
 }
