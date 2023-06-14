@@ -123,6 +123,7 @@ export class Room {
             throw "You're already in a room";
         }
         this.members.push(new RoomMember(user));
+        this.sendBufferEvent();
     }
 
     public removeUser(user: User) {
@@ -133,6 +134,7 @@ export class Room {
         if (this.owner.user == user) {
             if (this.members.length) {
                 this.owner = this.members[0];
+                this.sendBufferEvent();
             } else {
                 console.log("deleting room!");
                 Room.rooms.delete(this.id);
