@@ -1,6 +1,6 @@
 import { WebSocket } from "ws";
 import Socket from "./socket";
-import { UserMessageCreateRoom, UserMessageType } from "./types/user-messages";
+import { UserMessageType } from "./types/user-messages";
 
 export function connect(socket: Socket) {
     socket.get().on("connection", client => {
