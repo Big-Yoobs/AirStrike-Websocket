@@ -123,6 +123,10 @@ export class Room {
             throw "You're already in a room";
         }
         this.members.push(new RoomMember(user));
+        user.send("url", {
+            room: this.id,
+            url: this.url
+        });
         this.sendBufferEvent();
     }
 
@@ -145,7 +149,10 @@ export class Room {
     public setUrl(url: string) {
         if (this.url == url) return;
         this.url = url;
-        this.dispatchEvent("url", url);
+        this.dispatchEvent("url", {
+            room: this.id,
+            url: this.url
+        });
     }
 
     public sendChat(message: string, sender?: User) {
