@@ -140,10 +140,12 @@ export class Room {
     }
 
     public removeUser(user: User) {
+        console.log("removing user " + user.id);
         const member = this.getMember(user);
         if (!member) throw "You're not in a room";
         this.members.splice(this.members.indexOf(member, 1));
         user.send("room ID", null);
+        console.log("removed user " + member.user.id);
 
         if (this.owner.user == user) {
             console.log("owner just left!");
