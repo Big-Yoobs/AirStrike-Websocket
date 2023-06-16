@@ -59,6 +59,7 @@ export class Room {
             user.addMessageListener({
                 id: "chat",
                 callback: message => {
+                    console.log(message);
                     const room = this.getUserRoom(user);
                     if (!room) {
                         return user.error("You're not in a room");
