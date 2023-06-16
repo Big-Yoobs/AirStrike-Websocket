@@ -168,7 +168,7 @@ export class Room {
     }
 
     public sendChat(message: string, sender?: User) {
-        console.log("sending chat to " + this.members.length + " users", this.members);
+        console.log("sending chat to " + this.members.length + " users");
         this.dispatchEvent("chat", {
             sender: sender ? sender.id : "system",
             message

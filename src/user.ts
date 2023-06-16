@@ -1,6 +1,7 @@
 import { WebSocket } from "ws";
 import Socket from "./socket";
 import { UserMessageType } from "./types/user-messages";
+import { randomString } from "./utils";
 
 export function connect(socket: Socket) {
     socket.get().on("connection", client => {
@@ -27,7 +28,7 @@ export default class User {
     }
 
     private messageListeners: UserMessageType[] = [];
-    public readonly id = "Cool username";
+    public readonly id = "User " + randomString(3);
 
     constructor(public readonly socket: WebSocket) {
         User.users.push(this);
