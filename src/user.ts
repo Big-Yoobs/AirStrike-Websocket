@@ -1,7 +1,7 @@
 import { WebSocket } from "ws";
 import Socket from "./socket";
 import { UserMessageType } from "./types/user-messages";
-import { randomString } from "./utils";
+import { randomString } from "./utils.js";
 
 export function connect(socket: Socket) {
     socket.get().on("connection", client => {
