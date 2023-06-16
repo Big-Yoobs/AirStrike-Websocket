@@ -113,7 +113,7 @@ export class Room {
         console.log("created room with ID", this.id);
         setTimeout(() => {
             if (this.active) {
-                this.sendChat("Welcome to room " + this.id);
+                this.sendChat(`Welcome to room ${this.id}.`);
             }
         }, 1000);
     }
