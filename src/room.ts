@@ -142,7 +142,6 @@ export class Room {
         const member = this.getMember(user);
         if (!member) throw "You're not in a room";
         this.members.splice(this.members.indexOf(member, 1));
-        console.log("USER LEAVE ROOM");
 
         if (this.owner.user == user) {
             if (this.members.length) {
@@ -154,6 +153,8 @@ export class Room {
                 Room.rooms.delete(this.id);
                 this.active = false;
             }
+        } else {
+            this.sendChat(`${user.id} left the room.`);
         }
     }
 
