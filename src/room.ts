@@ -121,6 +121,7 @@ export class Room {
     private dispatchEvent(type: string, data?: any) {
         console.log(type, data);
         for (let member of this.members) {
+            console.log("sending to", member.user.id);
             member.user.send(type, data);
         }
     }
@@ -145,7 +146,9 @@ export class Room {
         user.send("room ID", null);
 
         if (this.owner.user == user) {
+            console.log("owner just left!");
             if (this.members.length) {
+                console.log(this.members);
                 this.owner = this.members[0];
                 this.sendBufferEvent();
                 this.sendChat(`${user.id} left the room. ${this.owner.user.id} has been promoted to owner.`);
