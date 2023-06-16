@@ -110,7 +110,6 @@ export class Room {
         Room.rooms.set(this.id, this);
         this.owner = new RoomMember(owner);
         this.members.push(this.owner);
-        console.log("created room with ID", this.id);
         setTimeout(() => {
             if (this.active) {
                 this.sendChat(`Welcome to room ${this.id}.`);
@@ -119,9 +118,7 @@ export class Room {
     }
 
     private dispatchEvent(type: string, data?: any) {
-        console.log(type, data);
         for (let member of this.members) {
-            console.log("sending to", member.user.id);
             member.user.send(type, data);
         }
     }
@@ -140,27 +137,19 @@ export class Room {
     }
 
     public removeUser(user: User) {
-        console.log("\n\n\nremoving user " + user.id);
         const member = this.getMember(user);
         if (!member) throw "You're not in a room";
-        console.log("users:", this.members.map(m => m.user.id));
         const index = this.members.indexOf(member);
         if (index < 0) return;
-        console.log("index:", index);
         this.members.splice(index, 1);
         user.send("room ID", null);
-        console.log("removed user " + member.user.id);
-        console.log("remaining users:", this.members.map(m => m.user.id), "\n\n\n");
 
         if (this.owner.user == user) {
-            console.log("owner just left!");
             if (this.members.length) {
-                console.log(this.members);
                 this.owner = this.members[0];
                 this.sendBufferEvent();
                 this.sendChat(`${user.id} left the room. ${this.owner.user.id} has been promoted to owner.`);
             } else {
-                console.log("deleting room!");
                 Room.rooms.delete(this.id);
                 this.active = false;
             }
@@ -179,7 +168,6 @@ export class Room {
     }
 
     public sendChat(message: string, sender?: User) {
-        console.log("sending chat to " + this.members.length + " users");
         this.dispatchEvent("chat", {
             sender: sender ? sender.id : "system",
             message
