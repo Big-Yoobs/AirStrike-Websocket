@@ -29,7 +29,7 @@ export class Room {
             user.addMessageListener({
                 id: "join room",
                 callback: roomId => {
-                    const room = this.rooms.get(roomId);
+                    const room = this.rooms.get(roomId.toUpperCase());
                     if (!room) {
                         return user.error("That room doesn't exist");
                     }
@@ -98,6 +98,7 @@ export class Room {
     private members: RoomMember[] = [];
     private url: string | null = null;
     private owner: RoomMember;
+    private active = true;
 
     private constructor(owner: User) {
         let roomId;
@@ -110,6 +111,11 @@ export class Room {
         this.owner = new RoomMember(owner);
         this.members.push(this.owner);
         console.log("created room with ID", this.id);
+        setTimeout(() => {
+            if (this.active) {
+                this.sendChat("Welcome to room " + this.id);
+            }
+        }, 1000);
     }
 
     private dispatchEvent(type: string, data?: any) {
@@ -144,6 +150,7 @@ export class Room {
             } else {
                 console.log("deleting room!");
                 Room.rooms.delete(this.id);
+                this.active = false;
             }
         }
     }
