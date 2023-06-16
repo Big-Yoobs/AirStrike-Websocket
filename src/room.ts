@@ -142,7 +142,7 @@ export class Room {
         const member = this.getMember(user);
         if (!member) throw "You're not in a room";
         this.members.splice(this.members.indexOf(member, 1));
-        user.send("leave");
+        user.send("room ID", null);
 
         if (this.owner.user == user) {
             if (this.members.length) {
