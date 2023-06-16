@@ -147,7 +147,7 @@ export class Room {
         const index = this.members.indexOf(member);
         if (index < 0) return;
         console.log("index:", index);
-        this.members.splice(index);
+        this.members.splice(index, 1);
         user.send("room ID", null);
         console.log("removed user " + member.user.id);
         console.log("remaining users:", this.members.map(m => m.user.id), "\n\n\n");
