@@ -59,7 +59,6 @@ export class Room {
             user.addMessageListener({
                 id: "chat",
                 callback: message => {
-                    console.log(message);
                     const room = this.getUserRoom(user);
                     if (!room) {
                         return user.error("You're not in a room");
@@ -120,6 +119,7 @@ export class Room {
     }
 
     private dispatchEvent(type: string, data?: any) {
+        console.log(type, data);
         for (let member of this.members) {
             member.user.send(type, data);
         }
