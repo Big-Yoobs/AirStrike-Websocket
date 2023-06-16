@@ -128,6 +128,7 @@ export class Room {
             url: this.url
         });
         this.sendBufferEvent();
+        this.sendChat(`${user.id} joined the room.`);
     }
 
     public removeUser(user: User) {
@@ -139,6 +140,7 @@ export class Room {
             if (this.members.length) {
                 this.owner = this.members[0];
                 this.sendBufferEvent();
+                this.sendChat(`${user.id} left the room. ${this.owner.user.id} has been promoted to owner.`);
             } else {
                 console.log("deleting room!");
                 Room.rooms.delete(this.id);
@@ -156,7 +158,10 @@ export class Room {
     }
 
     public sendChat(message: string, sender?: User) {
-        this.dispatchEvent("chat", message); // todo: add system messages
+        this.dispatchEvent("chat", {
+            sender: sender ? sender.id : "system",
+            message
+        });
     }
 
     public getMember(user: User) {

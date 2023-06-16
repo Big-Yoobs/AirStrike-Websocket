@@ -27,6 +27,7 @@ export default class User {
     }
 
     private messageListeners: UserMessageType[] = [];
+    public readonly id = "Cool username";
 
     constructor(public readonly socket: WebSocket) {
         User.users.push(this);
