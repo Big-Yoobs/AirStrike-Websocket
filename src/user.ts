@@ -162,6 +162,26 @@ export default class User {
             }
         }
 
+        if (type == "paused") {
+            if (typeof data != "boolean") throw "invalid data";
+
+            for (let l of this.messageListeners) {
+                if (l.id == "paused") {
+                    l.callback(data);
+                }
+            }
+        }
+
+        if (type == "timestamp") {
+            if (typeof data != "number") throw "invalid data";
+
+            for (let l of this.messageListeners) {
+                if (l.id == "timestamp") {
+                    l.callback(data);
+                }
+            }
+        }
+
         console.error(`Unknown packet type '${type}'`);
     }
 }

@@ -34,5 +34,15 @@ export interface UserMessageBuffering extends UserMessage {
     callback: (isBuffering: boolean) => void
 }
 
+export interface UserMessagePaused extends UserMessage {
+    id: "paused"
+    callback: (isPaused: boolean) => void
+}
 
-export type UserMessageType = UserMessageCreateRoom | UserMessageJoinRoom | UserMessageUrl | UserMessageLeave | UserMessageChat | UserMessageBuffering;
+export interface UserMessageTimestamp extends UserMessage {
+    id: "timestamp"
+    callback: (timestamp: number) => void
+}
+
+
+export type UserMessageType = UserMessageCreateRoom | UserMessageJoinRoom | UserMessageUrl | UserMessageLeave | UserMessageChat | UserMessageBuffering | UserMessagePaused | UserMessageTimestamp;

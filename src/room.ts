@@ -81,6 +81,36 @@ export class Room {
                     member.isBuffering = isBuffering;
                     room.sendBufferEvent();
                 }
+            });
+
+            user.addMessageListener({
+                id: "paused",
+                callback: isPaused => {
+                    const room = this.getUserRoom(user);
+                    if (!room) {
+                        return user.error("You're not in a room");
+                    }
+                    if (room.owner.user != user) {
+                        return user.error("You're not the owner of the room");
+                    }
+                    room.paused = isPaused;
+                    room.dispatchEvent("paused", room.paused);
+                }
+            });
+
+            user.addMessageListener({
+                id: "timestamp",
+                callback: timestamp => {
+                    const room = this.getUserRoom(user);
+                    if (!room) {
+                        return user.error("You're not in a room");
+                    }
+                    if (room.owner.user != user) {
+                        return user.error("You're not the owner of the room");
+                    }
+                    room.timestamp = timestamp;
+                    room.dispatchEvent("timestamp", room.timestamp);
+                }
             })
         });
     }
@@ -98,6 +128,8 @@ export class Room {
     public readonly id: string;
     private members: RoomMember[] = [];
     private url: string | null = null;
+    private timestamp = 0;
+    private paused = true;
     private owner: RoomMember;
     private active = true;
 
@@ -134,6 +166,8 @@ export class Room {
             url: this.url
         });
         this.sendBufferEvent();
+        user.send("paused", this.paused);
+        user.send("timestamp", this.timestamp);
         this.sendChat(`${user.id} joined the room.`);
     }
 
