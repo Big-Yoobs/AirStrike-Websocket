@@ -166,8 +166,10 @@ export class Room {
             url: this.url
         });
         this.sendBufferEvent();
-        user.send("paused", this.paused);
-        user.send("timestamp", this.timestamp);
+        setTimeout(() => {
+            user.send("paused", this.paused);
+            user.send("timestamp", this.timestamp);
+        }, 500);
         this.sendChat(`${user.id} joined the room.`);
     }
 
