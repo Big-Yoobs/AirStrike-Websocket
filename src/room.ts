@@ -204,6 +204,10 @@ export class Room {
         });
         this.dispatchEvent("timestamp", 0);
         this.dispatchEvent("paused", false);
+        setTimeout(() => {
+            this.timestamp = 0;
+            this.dispatchEvent("timestamp", 0);
+        }, 500);
     }
 
     public sendChat(message: string, sender?: User) {
