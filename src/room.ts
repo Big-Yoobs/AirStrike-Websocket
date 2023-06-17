@@ -129,7 +129,7 @@ export class Room {
     private members: RoomMember[] = [];
     private url: string | null = null;
     private timestamp = 0;
-    private paused = true;
+    private paused = false;
     private owner: RoomMember;
     private active = true;
 
@@ -197,11 +197,13 @@ export class Room {
         if (this.url == url) return;
         this.url = url;
         this.timestamp = 0;
+        this.paused = false;
         this.dispatchEvent("url", {
             room: this.id,
             url: this.url
         });
         this.dispatchEvent("timestamp", 0);
+        this.dispatchEvent("paused", false);
     }
 
     public sendChat(message: string, sender?: User) {
