@@ -79,6 +79,7 @@ export class Room {
                         return user.error("You're not in a room");
                     }
                     member.isBuffering = isBuffering;
+                    room.sendBufferEvent();
                 }
             })
         });
