@@ -196,10 +196,12 @@ export class Room {
     public setUrl(url: string) {
         if (this.url == url) return;
         this.url = url;
+        this.timestamp = 0;
         this.dispatchEvent("url", {
             room: this.id,
             url: this.url
         });
+        this.dispatchEvent("timestamp", 0);
     }
 
     public sendChat(message: string, sender?: User) {
