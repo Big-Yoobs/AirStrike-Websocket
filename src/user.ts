@@ -182,6 +182,16 @@ export default class User {
             }
         }
 
+        if (type == "sound") {
+            if (typeof data != "string") throw "invalid data";
+
+            for (let l of this.messageListeners) {
+                if (l.id == "sound") {
+                    l.callback(data);
+                }
+            }
+        }
+
         console.error(`Unknown packet type '${type}'`);
     }
 }

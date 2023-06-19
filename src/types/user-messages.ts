@@ -44,5 +44,10 @@ export interface UserMessageTimestamp extends UserMessage {
     callback: (timestamp: number) => void
 }
 
+export interface UserMessageSound extends UserMessage {
+    id: "sound",
+    callback: (soundId: string) => void
+}
 
-export type UserMessageType = UserMessageCreateRoom | UserMessageJoinRoom | UserMessageUrl | UserMessageLeave | UserMessageChat | UserMessageBuffering | UserMessagePaused | UserMessageTimestamp;
+
+export type UserMessageType = UserMessageCreateRoom | UserMessageJoinRoom | UserMessageUrl | UserMessageLeave | UserMessageChat | UserMessageBuffering | UserMessagePaused | UserMessageTimestamp | UserMessageSound;

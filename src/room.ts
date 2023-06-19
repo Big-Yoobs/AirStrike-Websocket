@@ -111,6 +111,17 @@ export class Room {
                     room.timestamp = timestamp;
                     room.dispatchEvent("timestamp", room.timestamp);
                 }
+            });
+
+            user.addMessageListener({
+                id: "chat",
+                callback: soundId => {
+                    const room = this.getUserRoom(user);
+                    if (!room) {
+                        return user.error("You're not in a room");
+                    }
+                    room.dispatchEvent("sound", soundId);
+                }
             })
         });
     }
