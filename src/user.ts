@@ -102,9 +102,10 @@ export default class User {
     private handleMessage(type: string, data?: any) {
 
         if (type == "create room") {
+            const url = typeof data == "string" ? data : undefined;
             for (let l of this.messageListeners) {
                 if (l.id == "create room") {
-                    l.callback();
+                    l.callback(url);
                 }
             }
             return;

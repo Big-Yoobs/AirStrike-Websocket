@@ -20,9 +20,12 @@ export class Room {
 
             user.addMessageListener({
                 id: "create room",
-                callback: () => {
-                    const room = new Room(user);
-                    user.send("room ID", room.id);
+                callback: url => {
+                    const room = new Room(user, url);
+                    user.send("url", {
+                        room: room.id,
+                        url: room.url
+                    });
                 }
             });
 
@@ -144,12 +147,17 @@ export class Room {
     private owner: RoomMember;
     private active = true;
 
-    private constructor(owner: User) {
+    private constructor(owner: User, url?: string) {
         let roomId;
         let tries = 0;
+        if (url) {
+            this.url = url;
+        }
+
         do {
             roomId = randomString(4 + Math.floor(tries++ / 10));
         } while (Room.rooms.has(roomId));
+
         this.id = roomId;
         Room.rooms.set(this.id, this);
         this.owner = new RoomMember(owner);
@@ -203,6 +211,7 @@ export class Room {
             }
         } else {
             this.sendChat(`${user.id} left the room.`);
+            this.sendBufferEvent();
         }
     }
 

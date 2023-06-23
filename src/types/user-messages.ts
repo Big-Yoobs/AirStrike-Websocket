@@ -6,7 +6,7 @@ export interface UserMessage {
 
 export interface UserMessageCreateRoom extends UserMessage {
     id: "create room"
-    callback: () => void
+    callback: (url?: string) => void
 }
 
 export interface UserMessageJoinRoom extends UserMessage {
