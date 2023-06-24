@@ -28,7 +28,7 @@ export default class User {
     }
 
     private messageListeners: UserMessageType[] = [];
-    public readonly id = "User " + randomString(3);
+    private id = "User " + randomString(3);
 
     constructor(public readonly socket: WebSocket) {
         User.users.push(this);
@@ -52,6 +52,17 @@ export default class User {
         });
 
         User.dispatchEvent("connect", this);
+
+        this.addMessageListener({
+            id: "avatar",
+            callback: avatar => {
+                this.id = avatar
+            }
+        });
+    }
+
+    public getId() {
+        return this.id;
     }
 
     public addMessageListener(listener: UserMessageType) {
@@ -188,6 +199,16 @@ export default class User {
 
             for (let l of this.messageListeners) {
                 if (l.id == "sound") {
+                    l.callback(data);
+                }
+            }
+        }
+
+        if (type == "pfp") {
+            if (typeof data != "string") throw "invalid data";
+
+            for (let l of this.messageListeners) {
+                if (l.id == "avatar") {
                     l.callback(data);
                 }
             }
