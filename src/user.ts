@@ -209,7 +209,7 @@ export default class User {
             return;
         }
 
-        if (type == "pfp") {
+        if (type == "avatar") {
             if (typeof data != "string") throw "invalid data";
 
             for (let l of this.messageListeners) {
