@@ -173,6 +173,7 @@ export default class User {
                     l.callback(data);
                 }
             }
+            return;
         }
 
         if (type == "paused") {
@@ -183,6 +184,7 @@ export default class User {
                     l.callback(data);
                 }
             }
+            return;
         }
 
         if (type == "timestamp") {
@@ -193,6 +195,7 @@ export default class User {
                     l.callback(data);
                 }
             }
+            return;
         }
 
         if (type == "sound") {
@@ -203,6 +206,7 @@ export default class User {
                     l.callback(data);
                 }
             }
+            return;
         }
 
         if (type == "pfp") {
@@ -213,6 +217,7 @@ export default class User {
                     l.callback(data);
                 }
             }
+            return;
         }
 
         console.error(`Unknown packet type '${type}'`);
