@@ -56,7 +56,6 @@ export default class User {
         this.addMessageListener({
             id: "avatar",
             callback: avatar => {
-                console.log("updated user's avatar to", avatar);
                 this.id = avatar;
             }
         });
