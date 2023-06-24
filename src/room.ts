@@ -189,7 +189,7 @@ export class Room {
             user.send("paused", this.paused);
             user.send("timestamp", this.timestamp);
         }, 500);
-        this.sendChat(`${user.id} joined the room.`);
+        this.sendChat(`${user.getId()} joined the room.`);
     }
 
     public removeUser(user: User) {
@@ -204,13 +204,13 @@ export class Room {
             if (this.members.length) {
                 this.owner = this.members[0];
                 this.sendBufferEvent();
-                this.sendChat(`${user.id} left the room. ${this.owner.user.id} has been promoted to owner.`);
+                this.sendChat(`${user.getId()} left the room. ${this.owner.user.getId()} has been promoted to owner.`);
             } else {
                 Room.rooms.delete(this.id);
                 this.active = false;
             }
         } else {
-            this.sendChat(`${user.id} left the room.`);
+            this.sendChat(`${user.getId()} left the room.`);
             this.sendBufferEvent();
         }
     }
@@ -234,7 +234,7 @@ export class Room {
 
     public sendChat(message: string, sender?: User) {
         this.dispatchEvent("chat", {
-            sender: sender ? sender.id : "system",
+            sender: sender ? sender.getId() : "system",
             message
         });
     }
