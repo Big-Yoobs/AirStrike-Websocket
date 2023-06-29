@@ -109,7 +109,8 @@ export class Room {
                         return user.error("You're not in a room");
                     }
                     if (room.owner.user != user) {
-                        return user.error("You're not the owner of the room");
+                        // return user.error("You're not the owner of the room");
+                        return;
                     }
                     room.timestamp = timestamp;
                     room.dispatchEvent("timestamp", room.timestamp);
